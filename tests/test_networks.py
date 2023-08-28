@@ -681,6 +681,14 @@ def test_custom_schemes():
         Model(v='ws:///foo/bar')
 
 
+def test_host_not_required():
+    class Model(BaseModel):
+        v: Annotated[Url, UrlConstraints(host_required=False)]
+
+    assert str(Model(v='foo:///foo/bar').v) == 'foo:///foo/bar'
+    assert str(Model(v='foo://foo:bar@/foo/bar').v) == 'foo://foo:bar@/foo/bar'
+
+
 @pytest.mark.parametrize(
     'options',
     [
